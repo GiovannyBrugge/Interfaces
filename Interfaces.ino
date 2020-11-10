@@ -1,5 +1,6 @@
 #define GIVE_INPUT     'a'  // the byte signalling that the computer wants input
 #define ISSUE_COMMAND  'b'  // the byte signalling that the computer issues a command
+#include <FastLED.h>
 
 const int toggleSwitch1 = 23;
 const int toggleSwitch2 = 22;
@@ -7,8 +8,11 @@ const int toggleSwitch3 = 21;
 const int toggleSwitch4 = 20;
 const int tempSensor = 19;
 const int lightSensor = 18;
-//const int rotarySwtich = 
-//const int rotaryEncoder = 1;
+const int rotarySwitch = 17;
+const int ledStrip = 16;
+const int colorSensor1 4;
+const int colorSensor2 5;
+const int colorSensor3 6;
 void setup() {
   Serial.begin(115200);
   pinMode(toggleSwitch1, INPUT_PULLUP);
@@ -17,12 +21,12 @@ void setup() {
   pinMode(toggleSwitch4, INPUT_PULLUP);
   pinMode(tempSensor, INPUT);
   pinMode(lightSensor, INPUT);
-  //pinMode(rotaryEncoder, INPUT);
-  
+  pinMode(rotarySwitch, INPUT);
+  pinMode(ledStrip, OUTPUT);
 }
 
 void loop() {
- // DONT FORGET TO UNCOMMENT
+ 
   if(Serial.available()) {
     char byteIn = Serial.read();
 
@@ -31,7 +35,9 @@ void loop() {
     }
   }
  // giveInput();
+  digitalWrite(ledStrip, HIGH); 
   delay(20);
+  //digitalWrite(ledStrip, HIGH);  
 }
 
 void giveInput(){
@@ -61,8 +67,12 @@ void giveInput(){
     int ls = analogRead(lightSensor);
     sOutput = sOutput + "," + ls;
     
-    /*int re = digitalRead(rotaryEncoder);
-    sOutput = sOutput + "," + re;
-    */
+    //add value analog A3
+    int rs = analogRead(rotarySwitch);
+    sOutput = sOutput + "," + rs;
+
+     
+      
+    
     Serial.println(sOutput);
 }
