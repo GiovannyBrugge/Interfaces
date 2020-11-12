@@ -56,7 +56,6 @@ void setup() {
   // Set frequency scaling to 20%:
   digitalWrite(S0, HIGH);
   digitalWrite(S1, LOW);
-  Serial.begin(9600);//begin serial communication
   calibrate();//calibrate sensor (look at serial monitor)
 } 
 
@@ -65,7 +64,6 @@ void loop() {
   decideColor();//format color values
   if(Serial.available()) {
     char byteIn = Serial.read();
-
     if(byteIn == GIVE_INPUT){
       
       giveInput();
@@ -73,7 +71,7 @@ void loop() {
   }
  
  
- // giveInput();
+  // giveInput();
   //digitalWrite(ledStrip, HIGH); 
   delay(20);
   
@@ -82,54 +80,49 @@ void loop() {
 void giveInput(){
   String sOutput = "";
 
-   // add value analog A9  
-    int ts1 = digitalRead(toggleSwitch1);
-    sOutput = sOutput + ts1;
+  // add value analog A9  
+  int ts1 = digitalRead(toggleSwitch1);
+  sOutput = sOutput + ts1;
                 
-    // add value analog A8 
-    int ts2 = digitalRead(toggleSwitch2);
-    sOutput = sOutput + ","+ ts2;
+  // add value analog A8 
+  int ts2 = digitalRead(toggleSwitch2);
+  sOutput = sOutput + ","+ ts2;
                 
-    // add value analog A7  
-    int ts3 = digitalRead(toggleSwitch3);
-    sOutput = sOutput + ","+ ts3;
+  // add value analog A7  
+  int ts3 = digitalRead(toggleSwitch3);
+  sOutput = sOutput + ","+ ts3;
 
-    // add value analog A6  
-    int ts4 = digitalRead(toggleSwitch4);
-    sOutput = sOutput + ","+ ts4;
+  // add value analog A6  
+  int ts4 = digitalRead(toggleSwitch4);
+  sOutput = sOutput + ","+ ts4;
 
-    // add value analog A5
-    int tempS = analogRead(tempSensor);
-    sOutput = sOutput + ","+ tempS;
+  // add value analog A5
+  int tempS = analogRead(tempSensor);
+  sOutput = sOutput + ","+ tempS;
     
-    // add value analog A4
-    int ls = analogRead(lightSensor);
-    sOutput = sOutput + "," + ls;
+  // add value analog A4
+  int ls = analogRead(lightSensor);
+  sOutput = sOutput + "," + ls;
     
-    //add value analog A3
-    int rs = analogRead(rotarySwitch);
-    sOutput = sOutput + "," + rs; 
+  //add value analog A3
+  int rs = analogRead(rotarySwitch);
+  sOutput = sOutput + "," + rs; 
     
-    //add value Color Sensor
-    int cs;
-    switch (color) {
-      //white
-      case 1: cs = 1; break;
-      
-      //yellow
-      case 2: cs = 2; break;
-      
-      //red
-      case 3: cs = 3; break;
-      
-      //green
-      case 4: cs = 4; break;
-      
-      //blue
-      case 5: cs = 5; break;
-      
-      //unknown
-      default: cs = 6; break;
+  //add value Color Sensor
+  int cs;
+  switch (color) {
+    //white
+    case 1: cs = 1; break;
+    //yellow
+    case 2: cs = 2; break;  
+    //red
+    case 3: cs = 3; break;
+    //green
+    case 4: cs = 4; break;
+    //blue
+    case 5: cs = 5; break;
+    //unknown
+    default: cs = 6; break;
   }
     analogRead(cs);
     sOutput = sOutput + "," + cs; 
@@ -147,7 +140,6 @@ void decideColor() {//format color values
   int maxVal = max(redColor, blueColor);
   maxVal = max(maxVal, greenColor);
   //map new values
-  
   redColor = map(redColor, 0, maxVal, 0, 255);
   greenColor = map(greenColor, 0, maxVal, 0, 255);
   blueColor = map(blueColor, 0, maxVal, 0, 255);
@@ -160,7 +152,7 @@ void decideColor() {//format color values
   if (redColor > 250 && greenColor > 250 && blueColor > 250) {
     color = 1;//white
   }
-    else if (redColor > 200 &&  greenColor > 200 && blueColor < 100) {
+  else if (redColor > 200 &&  greenColor > 200 && blueColor < 100) {
     color = 2;//yellow
   }
   else if (redColor > 250 && greenColor < 200 && blueColor < 200) {
@@ -220,14 +212,12 @@ void readColor() {//get data from sensor
   redFrequency = pulseIn(sensorOut, LOW);
   redColor = map(redFrequency, redMin, redMax, 255, 0);
   delay(100);
-
   //green:
   digitalWrite(S2, HIGH);
   digitalWrite(S3, HIGH);
   greenFrequency = pulseIn(sensorOut, LOW);
   greenColor = map(greenFrequency, greenMin, greenMax, 255, 0);
   delay(100);
-
   //blue:
   digitalWrite(S2, LOW);
   digitalWrite(S3, HIGH);
